@@ -5,14 +5,15 @@ import io.maksymuimanov.history.entity.ChatMessage;
 import io.maksymuimanov.history.mapper.ChatMessageMapper;
 import io.maksymuimanov.history.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class HistoryServiceImpl implements HistoryService {
@@ -20,23 +21,27 @@ public class HistoryServiceImpl implements HistoryService {
     private final ChatMessageMapper messageMapper;
 
     @Override
-    @Transactional
     public Mono<ChatMessageDto> saveMessage(ChatMessageDto message) {
+        log.info("Saving message by messageId: {}", message.messageId());
         ChatMessage entity = messageMapper.toEntity(message);
         return messageRepository.save(entity)
-                .map(messageMapper::toDto);
+                .map(messageMapper::toDto)
+                .doOnNext(savedMessage -> log.info("Message saved by messageId: {}", savedMessage.messageId()))
+                .doOnError(error -> log.error("Error saving message: {}", error.getMessage()));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Flux<ChatMessageDto> getMessages(UUID chatId, Pageable pageable) {
-        return messageRepository.findAllByChatId(chatId, pageable)
+        log.info("Getting messages for chatId: {}", chatId);
+        return messageRepository.findAllByChatIdOrderByTimestampDesc(chatId, pageable)
                 .map(messageMapper::toDto);
     }
 
     @Override
-    @Transactional
     public Mono<Void> deleteMessage(UUID messageId) {
-        return messageRepository.deleteById(messageId);
+        log.info("Deleting message by messageId: {}", messageId);
+        return messageRepository.deleteById(messageId)
+                .doOnSuccess(_ -> log.info("Message deleted by messageId: {}", messageId))
+                .doOnError(error -> log.error("Error deleting message: {}", error.getMessage()));
     }
 }

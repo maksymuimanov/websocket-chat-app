@@ -8,5 +8,5 @@ import reactor.core.publisher.Flux;
 import java.util.UUID;
 
 public interface ChatMessageRepository extends ReactiveCrudRepository<ChatMessage, UUID> {
-    Flux<ChatMessage> findAllByChatId(UUID chatId, Pageable pageable);
+    Flux<ChatMessage> findAllByChatIdOrderByTimestampDesc(UUID chatId, Pageable pageable);
 }
