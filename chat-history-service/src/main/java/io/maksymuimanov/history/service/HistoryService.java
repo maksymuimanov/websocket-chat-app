@@ -1,6 +1,6 @@
 package io.maksymuimanov.history.service;
 
-import io.maksymuimanov.history.dto.ChatMessageDto;
+import io.maksymuimanov.history.dto.SavedChatMessage;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -8,9 +8,9 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public interface HistoryService {
-    Mono<ChatMessageDto> saveMessage(ChatMessageDto message);
+    Mono<SavedChatMessage> saveMessage(SavedChatMessage message);
 
-    Flux<ChatMessageDto> getMessages(UUID chatId, Pageable pageable);
+    Flux<SavedChatMessage> getMessages(UUID chatId, Pageable pageable);
 
-    Mono<Void> deleteMessage(UUID messageId);
+    Mono<Void> deleteMessage(SavedChatMessage message);
 }

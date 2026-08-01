@@ -1,4 +1,4 @@
-package io.maksymuimanov.chatservice;
+package io.maksymuimanov.chat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest
-class ChatServiceApplicationTests {
+class ChatApplicationTests {
 
     @Test
     void contextLoads() {

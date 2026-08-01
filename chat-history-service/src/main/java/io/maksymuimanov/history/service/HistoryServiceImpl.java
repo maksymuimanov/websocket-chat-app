@@ -1,6 +1,6 @@
 package io.maksymuimanov.history.service;
 
-import io.maksymuimanov.history.dto.ChatMessageDto;
+import io.maksymuimanov.history.dto.SavedChatMessage;
 import io.maksymuimanov.history.entity.ChatMessage;
 import io.maksymuimanov.history.mapper.ChatMessageMapper;
 import io.maksymuimanov.history.repository.ChatMessageRepository;
@@ -21,7 +21,7 @@ public class HistoryServiceImpl implements HistoryService {
     private final ChatMessageMapper messageMapper;
 
     @Override
-    public Mono<ChatMessageDto> saveMessage(ChatMessageDto message) {
+    public Mono<SavedChatMessage> saveMessage(SavedChatMessage message) {
         log.info("Saving message by messageId: {}", message.messageId());
         ChatMessage entity = messageMapper.toEntity(message);
         return messageRepository.save(entity)
@@ -31,14 +31,15 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Flux<ChatMessageDto> getMessages(UUID chatId, Pageable pageable) {
+    public Flux<SavedChatMessage> getMessages(UUID chatId, Pageable pageable) {
         log.info("Getting messages for chatId: {}", chatId);
         return messageRepository.findAllByChatIdOrderByTimestampDesc(chatId, pageable)
                 .map(messageMapper::toDto);
     }
 
     @Override
-    public Mono<Void> deleteMessage(UUID messageId) {
+    public Mono<Void> deleteMessage(SavedChatMessage message) {
+        UUID messageId = message.messageId();
         log.info("Deleting message by messageId: {}", messageId);
         return messageRepository.deleteById(messageId)
                 .doOnSuccess(_ -> log.info("Message deleted by messageId: {}", messageId))

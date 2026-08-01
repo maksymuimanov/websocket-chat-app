@@ -1,11 +1,11 @@
-package io.maksymuimanov.history.dto;
+package io.maksymuimanov.chat.dto;
 
 import lombok.Builder;
 
 import java.util.UUID;
 
 @Builder
-public record ChatMessageDto(
+public record SavedChatMessage(
         UUID messageId,
         UUID chatId,
         UUID senderId,

@@ -1,6 +1,6 @@
 package io.maksymuimanov.history.controller;
 
-import io.maksymuimanov.history.dto.ChatMessageDto;
+import io.maksymuimanov.history.dto.SavedChatMessage;
 import io.maksymuimanov.history.service.HistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +19,7 @@ public class HistoryController {
     private final HistoryService historyService;
 
     @GetMapping("/{chatId}/messages")
-    public Flux<ChatMessageDto> getChatMessages(@PathVariable UUID chatId, Pageable pageable) {
+    public Flux<SavedChatMessage> getChatMessages(@PathVariable UUID chatId, Pageable pageable) {
         return historyService.getMessages(chatId, pageable);
     }
 }
