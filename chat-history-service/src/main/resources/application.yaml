@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: chat-history-service
-  mvc:
-    apiversion:
-      use:
-        path-segment: 1

@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: history-service
+  mvc:
+    apiversion:
+      use:
+        path-segment: 1
