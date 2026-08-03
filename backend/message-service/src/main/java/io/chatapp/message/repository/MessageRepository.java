@@ -10,4 +10,6 @@ import java.util.UUID;
 
 public interface MessageRepository extends CassandraRepository<Message, MessageKey> {
     Page<Message> findAllByKeyChatId(UUID chatId, Pageable pageable);
+
+    void deleteByKeyId(UUID messageId);
 }

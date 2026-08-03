@@ -1,5 +1,6 @@
 package io.chatapp.message.service;
 
+import io.chatapp.message.dto.DeletedMessage;
 import io.chatapp.message.dto.MessageResponse;
 import io.chatapp.message.dto.SavedMessage;
 import io.chatapp.message.mapper.MessageMapper;
@@ -18,14 +19,17 @@ public class MessageService {
     private final MessageRepository messageRepository;
     private final MessageMapper messageMapper;
 
-    public MessageResponse saveMessage(SavedMessage message) {
+    public void saveMessage(SavedMessage message) {
         Message mappedMessage = messageMapper.toMessage(message);
         messageRepository.save(mappedMessage);
-        return messageMapper.toMessageResponse(mappedMessage);
     }
 
     public Page<MessageResponse> getMessages(UUID chatId, Pageable pageable) {
         return messageRepository.findAllByKeyChatId(chatId, pageable)
                 .map(messageMapper::toMessageResponse);
+    }
+
+    public void deleteMessages(DeletedMessage message) {
+        messageRepository.deleteByKeyId(message.messageId());
     }
 }
