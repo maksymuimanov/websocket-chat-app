@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: chat-service
+  mvc:
+    apiversion:
+      use:
+        path-segment: 1

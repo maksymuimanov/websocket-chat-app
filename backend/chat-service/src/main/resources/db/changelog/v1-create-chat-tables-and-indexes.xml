@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="v1-create-chat-tables-and-indexes" author="maksymuimanov">
+        <sql>
+            CREATE TABLE chats (
+                id UUID PRIMARY KEY,
+                type VARCHAR(63) NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE NOT NULL
+            );
+
+            CREATE TABLE chat_members (
+                chat_id UUID NOT NULL,
+                user_id UUID NOT NULL,
+                joined_at TIMESTAMP WITH TIME ZONE NOT NULL,
+                PRIMARY KEY (chat_id, user_id),
+                CONSTRAINT fk_chat_members_chat
+                    FOREIGN KEY (chat_id)
+                        REFERENCES chats(id)
+                        ON DELETE CASCADE
+            );
+
+            CREATE INDEX idx_chat_members_user_id
+                ON chat_members(user_id);
+        </sql>
+    </changeSet>
+</databaseChangeLog>
