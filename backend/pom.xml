@@ -18,6 +18,5 @@
     <modules>
         <module>message-service</module>
         <module>chat-service</module>
-        <module>communication-service</module>
     </modules>
 </project>
